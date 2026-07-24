@@ -7,8 +7,8 @@ const CONFIG = {
   // Les deux joueurs. "code" est le code secret que CHACUN garde pour lui
   // (pour prouver que c'est bien lui qui se connecte).
   players: {
-    j1: { name: "Joueur 1", code: "1234" },
-    j2: { name: "Joueur 2", code: "5678" },
+    j1: { name: " Emery ", code: "0629" },
+    j2: { name: "alana", code: "3926" },
   },
 
   // Fenêtre horaire (0-23) pendant laquelle chacun a le droit de voir SES mots.
