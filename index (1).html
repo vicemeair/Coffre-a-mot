@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Coffre à Mots</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scene">
+
+  <!-- ÉCRAN 1 : choix du joueur -->
+  <section id="screen-who" class="screen active">
+    <div class="card">
+      <p class="eyebrow">Le Coffre à Mots</p>
+      <h1>Qui ouvre le coffre ?</h1>
+      <div class="player-choice">
+        <button class="player-btn" data-player="j1"></button>
+        <button class="player-btn" data-player="j2"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÉCRAN 2 : code secret -->
+  <section id="screen-code" class="screen">
+    <div class="card">
+      <p class="eyebrow" id="code-eyebrow">Bonjour</p>
+      <h1>Ton code secret</h1>
+      <p class="hint">Toi seul le connais.</p>
+      <input type="password" inputmode="numeric" id="code-input" class="code-input" maxlength="12" autocomplete="off" placeholder="••••">
+      <p class="error" id="code-error"></p>
+      <div class="actions">
+        <button class="btn ghost" id="back-to-who">← Retour</button>
+        <button class="btn primary" id="submit-code">Entrer</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÉCRAN 3 : tableau de bord -->
+  <section id="screen-main" class="screen">
+    <div class="card wide">
+      <div class="topbar">
+        <p class="eyebrow" id="main-eyebrow">Bonjour</p>
+        <button class="btn text" id="logout">Changer de joueur</button>
+      </div>
+      <h1 id="main-title">Le coffre</h1>
+
+      <div class="panels">
+
+        <!-- Ajouter un mot pour l'autre -->
+        <div class="panel">
+          <h2>Ajoute un mot secret</h2>
+          <p class="hint" id="add-hint">Pour la liste de l'autre.</p>
+          <div class="add-row">
+            <input type="text" id="word-input" class="word-input" placeholder="Un mot..." autocomplete="off">
+            <button class="btn primary" id="add-word">Ajouter</button>
+          </div>
+          <p class="confirm" id="add-confirm"></p>
+        </div>
+
+        <!-- Voir ses propres mots -->
+        <div class="panel">
+          <h2>Tes mots</h2>
+
+          <div id="locked-view" class="locked-view">
+            <div class="lock-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64" width="56" height="56">
+                <rect x="14" y="28" width="36" height="28" rx="4" fill="none" stroke="currentColor" stroke-width="3"/>
+                <path d="M22 28 V20 a10 10 0 0 1 20 0 v8" fill="none" stroke="currentColor" stroke-width="3"/>
+                <circle cx="32" cy="40" r="3.5" fill="currentColor"/>
+                <line x1="32" y1="43.5" x2="32" y2="49" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p class="locked-msg">Coffre verrouillé.</p>
+            <p class="countdown" id="countdown">--</p>
+          </div>
+
+          <div id="unlocked-view" class="unlocked-view hidden">
+            <ol id="word-list" class="word-list"></ol>
+            <p class="empty" id="word-list-empty">Aucun mot pour l'instant.</p>
+            <p class="hint" id="relock-info"></p>
+          </div>
+
+          <p class="error" id="load-error"></p>
+        </div>
+
+        <!-- Voir les mots de l'autre, toujours accessible -->
+        <div class="panel">
+          <h2 id="other-panel-title">Les mots de l'autre</h2>
+          <p class="hint">Accessible à tout moment.</p>
+          <div id="other-unlocked-view" class="unlocked-view">
+            <ol id="other-word-list" class="word-list"></ol>
+            <p class="empty" id="other-word-list-empty">Aucun mot pour l'instant.</p>
+          </div>
+          <p class="error" id="other-load-error"></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

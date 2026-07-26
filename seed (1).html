@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insérer les mots de départ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scene">
+  <div class="card" style="max-width:460px; text-align:left;">
+    <p class="eyebrow">Installation — une seule fois</p>
+    <h1 style="text-align:center; margin-bottom:6px;">Insérer les mots de départ</h1>
+    <p class="hint" style="text-align:center; margin-bottom:22px;">
+      Écrit directement dans votre coffre (via config.js) la liste de mots déjà commencée pour Emery et pour Alana.
+      <strong>Attention : ceci remplace tout le contenu actuel du coffre.</strong>
+    </p>
+
+    <div class="panel" style="margin-bottom:14px;">
+      <h2 style="font-size:15px;">Emery recevra :</h2>
+      <p class="hint" id="preview-j1"></p>
+    </div>
+    <div class="panel" style="margin-bottom:18px;">
+      <h2 style="font-size:15px;">Alana recevra :</h2>
+      <p class="hint" id="preview-j2"></p>
+    </div>
+
+    <button class="btn primary" id="seed-btn" style="width:100%;">Insérer ces mots dans le coffre</button>
+    <p class="error" id="seed-error"></p>
+    <p class="confirm" id="seed-confirm"></p>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+const STARTING_WORDS = {
+  j1: ["colis", "colier", "colibri", "cauchemar", "Corentin", "cornichon"],
+  j2: ["sureau", "salami", "serpent", "sauce", "Sahara", "sombre"],
+};
+
+document.getElementById("preview-j1").textContent = STARTING_WORDS.j1.join(", ");
+document.getElementById("preview-j2").textContent = STARTING_WORDS.j2.join(", ");
+
+document.getElementById("seed-btn").addEventListener("click", async () => {
+  const btn = document.getElementById("seed-btn");
+  const errorEl = document.getElementById("seed-error");
+  const confirmEl = document.getElementById("seed-confirm");
+  errorEl.textContent = "";
+  confirmEl.textContent = "";
+  btn.disabled = true;
+  btn.textContent = "Insertion en cours...";
+
+  try {
+    const res = await fetch("https://api.jsonbin.io/v3/b/" + CONFIG.jsonbin.binId, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": CONFIG.jsonbin.masterKey,
+      },
+      body: JSON.stringify({
+        j1: { words: STARTING_WORDS.j1 },
+        j2: { words: STARTING_WORDS.j2 },
+      }),
+    });
+    if (!res.ok) throw new Error("Statut " + res.status);
+    confirmEl.textContent = "C'est fait ! Les mots sont dans le coffre. Tu peux retourner sur le site principal.";
+  } catch (err) {
+    errorEl.textContent = "Échec de l'insertion. Vérifie que config.js contient bien le bon Bin ID et la bonne Master Key. Détail : " + err.message;
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Insérer ces mots dans le coffre";
+  }
+});
+</script>
+</body>
+</html>
